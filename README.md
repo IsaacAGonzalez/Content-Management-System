@@ -30,7 +30,7 @@
   ```
 
   ## Usage
-  This repository is dependent on node packages including 'express', 'mysql2', 'inquirer@8.2.4', 'console.table'. The connection to the database is will require your own credentials to access your local MySQL database. You can use the established program as is by simply adding your own .env file with the expected variables for the database name, username, and password.
+  This repository is dependent on node packages including 'mysql2', 'inquirer@8.2.4', 'console.table'. The connection to the database is will require your own credentials to access your local MySQL database. You can use the established program as is by simply adding your own .env file with the expected variables for the database name, username, and password.
 
   ## Contributing 
   This repository was made will attending a coding bootcamp. It is meant for educational purposes. Feel free to use it for learning, inspiration, or simply out of curiosity. Happy Hacking! :)

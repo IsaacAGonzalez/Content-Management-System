@@ -1,19 +1,10 @@
 require('dotenv').config();
 require('console.table');
-const express = require('express');
 const mysql = require('mysql2');
 const inquirer = require('inquirer');
 
-const app = express();
-const PORT = process.env.PORT || 3001;
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
 const db = mysql.createConnection(
   {
-    host: 'localhost',
-    port: '3306',
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
@@ -21,25 +12,27 @@ const db = mysql.createConnection(
   console.log(`Connected to database established!`)
 );
 
-db.query('SELECT * FROM departments', function (err, results) {
-  console.log(results);
-});
-
-
-const viewDepartment = async () => {
+const viewDepartments = async () => {
   db.query('SELECT * FROM departments', function (err, results) {
-    console.log(results);
+    console.table(results);
   });
 }
 
 const viewRoles = async () => {
   db.query('SELECT * FROM roles', function (err, results) {
-    console.log(results);
+    console.table(results);
   });
 }
 
+const viewEmployees = async () => {
+  db.query('SELECT * FROM employees', function (err, results) {
+    console.table(results);
+  });
+}
+
+const final = () => {console.log('Done!')};
+
 async function main() {
-  console.clear();
   console.log("Welcome!")
   const startOption = await inquirer.prompt(
     {
@@ -59,12 +52,13 @@ async function main() {
   );
   switch (startOption.option) {
     case "View all departments":
-      viewDepartment();
+      await viewDepartments();
       break;
     case "View all roles":
-      viewRoles();
+      await viewRoles();
       break;
     case "View all employees":
+      await viewEmployees();
       break;
     case "Add a department":
       break;
@@ -75,8 +69,7 @@ async function main() {
     case "Update an employee role":
       break;
   }
-
-  console.log("Done!");
+  await final();
 }
 
 main();
