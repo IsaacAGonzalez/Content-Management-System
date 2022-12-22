@@ -21,53 +21,62 @@ const db = mysql.createConnection(
   console.log(`Connected to database established!`)
 );
 
+db.query('SELECT * FROM departments', function (err, results) {
+  console.log(results);
+});
 
 
+const viewDepartment = async () => {
+  db.query('SELECT * FROM departments', function (err, results) {
+    console.log(results);
+  });
+}
 
-// const viewDepartment = async () => {
-//   console.clear();
+const viewRoles = async () => {
+  db.query('SELECT * FROM roles', function (err, results) {
+    console.log(results);
+  });
+}
 
-// }
+async function main() {
+  console.clear();
+  console.log("Welcome!")
+  const startOption = await inquirer.prompt(
+    {
+      type: "list",
+      name: "option",
+      message: "What would you like to do?",
+      choices: [
+        "View all departments", 
+        "View all roles", 
+        "View all employees", 
+        "Add a department", 
+        "Add a role", 
+        "Add an employee", 
+        "Update an employee role"
+      ],
+    }
+  );
+  switch (startOption.option) {
+    case "View all departments":
+      viewDepartment();
+      break;
+    case "View all roles":
+      viewRoles();
+      break;
+    case "View all employees":
+      break;
+    case "Add a department":
+      break;
+    case "Add a role":
+      break;
+    case "Add an employee":
+      break;
+    case "Update an employee role":
+      break;
+  }
 
-// async function main() {
-//   console.clear();
-//   console.log("Welcome!")
-//   const startOption = await inquirer.prompt(
-//     {
-//       type: "list",
-//       name: "option",
-//       message: "What would you like to do?",
-//       choices: [
-//         "View all departments", 
-//         "View all roles", 
-//         "View all employees", 
-//         "Add a department", 
-//         "Add a role", 
-//         "Add an employee", 
-//         "Update an employee role"
-//       ],
-//     }
-//   );
-//   switch (startOption.option) {
-//     case "View all departments":
-//       viewDepartment();
-//       break;
-//     case "View all roles":
+  console.log("Done!");
+}
 
-//       break;
-//     case "View all employees":
-//       break;
-//     case "Add a department":
-//       break;
-//     case "Add a role":
-//       break;
-//     case "Add an employee":
-//       break;
-//     case "Update an employee role":
-//       break;
-//   }
-
-//   console.log("Done!");
-// }
-
-// main();
+main();
