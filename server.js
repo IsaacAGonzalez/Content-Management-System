@@ -13,35 +13,6 @@ const db = mysql.createConnection(
   console.log(`Connected to database established!`)
 );
 
-const begin = async (choice) => {
-  switch (choice) {
-    case "View all departments":
-      await viewDepartments();
-      break;
-    case "View all roles":
-      await viewRoles();
-      break;
-    case "View all employees":
-      await viewEmployees();
-      break;
-    case "Add a department":
-      await addDepartment();
-      break;
-    case "Add a role":
-      await addRole();
-      break;
-    case "Add an employee":
-      await addEmployee();
-      break;
-    case "Update an employee role":
-      await updateEmployee();
-      break;
-    case "Exit":
-      await final();
-      break;
-  }
-};
-
 const viewDepartments = async () => {
   db.query('SELECT * FROM departments', function (err, results) {
     console.log('\n');
@@ -67,10 +38,18 @@ const viewEmployees = async () => {
 };
 
 const addDepartment = async () => {
-  db.query('SELECT * FROM departments', function (err, results) {
-    console.log('\n');
-    console.table(results);
-  });
+  const newDept = await inquirer.prompt(
+    {
+      type: "input",
+      name: "name",
+      message: "What is the name of the new department?",
+    }
+  );
+  db.query('INSERT INTO departments SET ?', 
+    {
+      dept_name: newDept.name,
+    }
+  );
   await main();
 };
 
@@ -114,7 +93,32 @@ async function main() {
       ],
     }
   );
-  await begin(startOption.option);
+  switch (startOption.option) {
+    case "View all departments":
+      await viewDepartments();
+      break;
+    case "View all roles":
+      await viewRoles();
+      break;
+    case "View all employees":
+      await viewEmployees();
+      break;
+    case "Add a department":
+      await addDepartment();
+      break;
+    case "Add a role":
+      await addRole();
+      break;
+    case "Add an employee":
+      await addEmployee();
+      break;
+    case "Update an employee role":
+      await updateEmployee();
+      break;
+    case "Exit":
+      await final();
+      break;
+  }
 };
 
 main();
