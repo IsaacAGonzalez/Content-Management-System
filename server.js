@@ -5,6 +5,7 @@ const inquirer = require('inquirer');
 
 const db = mysql.createConnection(
   {
+    host: 'localhost',
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
@@ -12,25 +13,87 @@ const db = mysql.createConnection(
   console.log(`Connected to database established!`)
 );
 
+const begin = async (choice) => {
+  switch (choice) {
+    case "View all departments":
+      await viewDepartments();
+      break;
+    case "View all roles":
+      await viewRoles();
+      break;
+    case "View all employees":
+      await viewEmployees();
+      break;
+    case "Add a department":
+      await addDepartment();
+      break;
+    case "Add a role":
+      await addRole();
+      break;
+    case "Add an employee":
+      await addEmployee();
+      break;
+    case "Update an employee role":
+      await updateEmployee();
+      break;
+    case "Exit":
+      await final();
+      break;
+  }
+};
+
 const viewDepartments = async () => {
   db.query('SELECT * FROM departments', function (err, results) {
+    console.log('\n');
     console.table(results);
   });
-}
+  main();
+};
 
 const viewRoles = async () => {
   db.query('SELECT * FROM roles', function (err, results) {
+    console.log('\n');
     console.table(results);
   });
-}
+  await main();
+};
 
 const viewEmployees = async () => {
   db.query('SELECT * FROM employees', function (err, results) {
+    console.log('\n');
     console.table(results);
   });
-}
+  await main();
+};
 
-const final = () => {console.log('Done!')};
+const addDepartment = async () => {
+  db.query('SELECT * FROM departments', function (err, results) {
+    console.log('\n');
+    console.table(results);
+  });
+  await main();
+};
+
+const addRole = async () => {
+  db.query('SELECT * FROM roles', function (err, results) {
+    console.log('\n');
+    console.table(results);
+  });
+  await main();
+};
+
+const addEmployee = async () => {
+  db.query('SELECT * FROM employees', function (err, results) {
+    console.log('\n');
+    console.table(results);
+  });
+  await main();
+};
+
+const final = () => {
+  db.end();
+  console.log('Done!')
+};
 
 async function main() {
   console.log("Welcome!")
@@ -46,30 +109,12 @@ async function main() {
         "Add a department", 
         "Add a role", 
         "Add an employee", 
-        "Update an employee role"
+        "Update an employee role",
+        "Exit",
       ],
     }
   );
-  switch (startOption.option) {
-    case "View all departments":
-      await viewDepartments();
-      break;
-    case "View all roles":
-      await viewRoles();
-      break;
-    case "View all employees":
-      await viewEmployees();
-      break;
-    case "Add a department":
-      break;
-    case "Add a role":
-      break;
-    case "Add an employee":
-      break;
-    case "Update an employee role":
-      break;
-  }
-  await final();
-}
+  await begin(startOption.option);
+};
 
 main();
